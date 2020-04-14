@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Record from './Record';
 import { getAllData } from '../utils/RecordAPI';
+import RecordForm from './RecordForm';
 
 class Records extends Component {
   constructor() {
@@ -42,13 +43,13 @@ class Records extends Component {
 
   render() {
     const { error, isLoaded, records } = this.state;
-
+    let content = "";
     if (error) {
-      return <div>Error: {error.message}</div>;
+      content =  (<div>Error: {error.message}</div>);
     } else if (!isLoaded) {
-      return <div>Loading...</div>;
+      content =  (<div>Loading...</div>);
     } else {
-      return (
+      content =  (
         <div>
           <h2>Records</h2>
           <table className="table table-bordered">
@@ -66,6 +67,13 @@ class Records extends Component {
         </div>
       );
     }
+    return (
+      <div>
+          <h2>Records</h2>
+          <RecordForm />
+          {content}
+      </div>
+    );
   }
 }
 
