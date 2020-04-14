@@ -41,6 +41,16 @@ class Records extends Component {
     )
   }
 
+  setDataTable(data) {
+    const records = [
+      ...this.state.records,
+      data
+    ];
+    this.setState({
+      records
+    })
+  }
+
   render() {
     const { error, isLoaded, records } = this.state;
     let content = "";
@@ -70,7 +80,7 @@ class Records extends Component {
     return (
       <div>
           <h2>Records</h2>
-          <RecordForm />
+          <RecordForm reload={this.setDataTable.bind(this)}/>
           {content}
       </div>
     );

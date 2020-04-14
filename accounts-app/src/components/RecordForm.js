@@ -28,29 +28,37 @@ export default class RecordForm extends Component {
     return this.state.date && this.state.title && this.state.amount
   }
 
-  postData() {
+  postData(event) {
+    event.preventDefault();
     const { amount } = this.state;
     const data = {
       ...this.state,
-      amount: parseInt(amount)
+      amount: Number.parseInt(amount, 10)
     }
     createData(data).then(res => res.data)
-        .then(data => console.log("数据增加成功", data))
+        .then(data => {
+          this.props.reload(data);
+          this.setState({
+            date: "",
+            title: "",
+            amount: ""
+          })
+        })
         .catch(err => console.log(err.message))
   }
   render() {
     return (
-      <form className="form-inline">
-        <div className="form-group">
+      <form className="form-inline mb-3" onSubmit={this.postData.bind(this)}>
+        <div className="form-group mr-1">
           <input type="text" className="form-control" onChange={this.handleChange.bind(this)} placeholder="Date" name="date" value={this.state.date} />
         </div>
-        <div className="form-group">
+        <div className="form-group mr-1">
           <input type="text" className="form-control" onChange={this.handleChange.bind(this)} placeholder="Title" name="title" value={this.state.title} />
         </div>
-        <div className="form-group">
+        <div className="form-group mr-1">
           <input type="text" className="form-control" onChange={this.handleChange.bind(this)}  placeholder="Amount" name="amount" value={this.state.amount} />
         </div>
-        <button type="submit" className="btn btn-primary" onClick={this.postData.bind(this)} disabled={!this.valid()}>Create Record</button>
+        <button type="submit" className="btn btn-primary" disabled={!this.valid()}>Create Record</button>
       </form>
     );
   }
